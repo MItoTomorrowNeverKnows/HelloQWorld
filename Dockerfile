@@ -12,7 +12,7 @@ FROM tomcat:10.1-jdk17-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
 # ステージ1で作成したWARファイルをTomcatの配備フォルダにコピー
 # ROOT.warという名前にすると、localhost:8080/ で直接アクセス可能になります
-COPY --from=build /app/target/quiz-app.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /app/target/hello-q-world.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
