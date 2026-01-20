@@ -1,0 +1,18 @@
+# --- ステージ1: ビルド環境 (Maven + JDK) ---
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+# MavenでビルドしてWARファイルを作成
+RUN mvn clean package
+
+# --- ステージ2: 実行環境 (Tomcat) ---
+FROM tomcat:10.1-jdk17-temurin
+# TomcatのデフォルトWebアプリを削除（任意）
+RUN rm -rf /usr/local/tomcat/webapps/*
+# ステージ1で作成したWARファイルをTomcatの配備フォルダにコピー
+# ROOT.warという名前にすると、localhost:8080/ で直接アクセス可能になります
+COPY --from=build /app/target/quiz-app.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
