@@ -4,4 +4,4 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./src:/app/src # コードを変更したら反映されやすくする設定（任意）
+      - .:/app
